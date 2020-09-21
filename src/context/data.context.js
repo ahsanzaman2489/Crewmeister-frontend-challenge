@@ -41,7 +41,7 @@ export const DataProvider = props => {
         setState(state => {
             return {...state, ready: true, events: [...allEvents]}
         });
-    })(), []);
+    })(), []); // Setting up initial state
 
     return (
         <DataContext.Provider
