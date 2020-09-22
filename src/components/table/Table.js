@@ -1,16 +1,12 @@
 import React from "react";
-import { MDBDataTable } from 'mdbreact';
+import {MDBDataTable} from 'mdbreact';
 
 const Table = ({events}) => {
     const data = {
         columns: [
-            {
-                label: 'Id',
-                field: 'userId',
-                sort: 'asc',
-            }, {
-                label: 'Name',
-                field: 'name',
+         {
+                label: 'Title',
+                field: 'title',
                 sort: 'asc',
             },
             {
@@ -27,12 +23,26 @@ const Table = ({events}) => {
                 label: 'end date',
                 field: 'endDate',
                 sort: 'asc',
+            },
+            {
+                label: 'created at',
+                field: 'createdAt',
+                sort: 'asc',
+            },
+            {
+                label: 'confirmed at',
+                field: 'confirmedAt',
+                sort: 'asc',
+            }, {
+                label: 'note',
+                field: 'memberNote',
+                sort: 'asc',
             }
         ],
         rows: events
     };
 
-    return(
+    return (
         <MDBDataTable
             striped
             bordered

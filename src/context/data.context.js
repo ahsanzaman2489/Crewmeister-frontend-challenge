@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {PropTypes} from 'prop-types';
 import absences from '../json_files/absences';
 import members from '../json_files/members';
+import * as moment from "moment";
 
 export const DataContext = React.createContext(null);
 
@@ -49,7 +50,9 @@ export const DataProvider = props => {
                 const absenceType = event.type.toLowerCase();
                 return {
                     ...event,
-                    name: getUserNameWithType(userName, absenceType)
+                    confirmedAt: moment(event.confirmedAt).format("YYYY-MM-DD"),
+                    createdAt: moment(event.createdAt).format("YYYY-MM-DD"),
+                    title: getUserNameWithType(userName, absenceType)
                 }
             }
         );
