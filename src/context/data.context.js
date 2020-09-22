@@ -28,14 +28,30 @@ export const DataProvider = props => {
         return allEvents.filter(event => event.userId === userId);
     };
 
+    const getUserNameWithType = (userName, absenceType) => {
+        switch (absenceType) {
+            case "sickness" :
+                return `${userName} is sick`;
+            case "vacation" :
+                return `${userName} is on vacation`;
+            default :
+                return `${userName} is on vacation`;
+        }
+    };
+
+
     useEffect(() => (() => {
         const allAbsences = getAllAbsences();
         const allMembers = getAllMembers();
 
-        let allEvents = allAbsences.map(event => ({
-                ...event,
-                name: allMembers[event.userId].name
-            })
+        let allEvents = allAbsences.map(event => {
+                const userName = allMembers[event.userId].name;
+                const absenceType = event.type.toLowerCase();
+                return {
+                    ...event,
+                    name: getUserNameWithType(userName, absenceType)
+                }
+            }
         );
 
         setState(state => {

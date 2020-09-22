@@ -27,10 +27,10 @@ class Header extends React.Component {
             <div>
                 <Router>
                     <header>
-                        <MDBNavbar color="black" fixed="top" dark expand="md">
+                        <MDBNavbar color="black" dark expand="md">
                             <MDBContainer>
                                 <MDBNavbarBrand href="/">
-                                    <strong>CrewMeister</strong>
+                                    <strong>Crewmeister frontend coding challenge</strong>
                                 </MDBNavbarBrand>
                             </MDBContainer>
                         </MDBNavbar>
