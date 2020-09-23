@@ -1,10 +1,11 @@
 import React from "react";
 import {MDBDataTable} from 'mdbreact';
+import PropTypes from "prop-types";
 
 const Table = ({events}) => {
     const data = {
         columns: [
-         {
+            {
                 label: 'Title',
                 field: 'title',
                 sort: 'asc',
@@ -50,6 +51,14 @@ const Table = ({events}) => {
             data={data}
         />
     );
+};
+
+Table.propTypes = {
+    children: PropTypes.array
+};
+
+Table.defualtProps = {
+    children: []
 };
 
 export default Table;

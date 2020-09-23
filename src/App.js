@@ -8,7 +8,6 @@ import './App.css';
 
 const HomeRoute = React.lazy(() => import("./routes/Home"));
 
-
 function App() {
     return (
         <BrowserRouter>

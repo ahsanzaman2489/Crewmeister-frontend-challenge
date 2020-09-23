@@ -3,6 +3,7 @@ import {DataContext} from '../context/data.context';
 import download from 'downloadjs';
 import * as moment from "moment";
 import querystring from "querystring";
+import PropTypes from "prop-types";
 
 const BasicShell = React.lazy(() => import("../shell/basicShell"));
 const Table = React.lazy(() => import("../components/table/Table"));
@@ -48,7 +49,7 @@ const HomePage = ({location}) => {
         setEvents([...getAllEventData(queryParamsObject)]);
         setLoading(false);
     }, []); //To get all sync data on component mount
-
+    console.log('asd')
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <BasicShell>{/*Included on page level for better visibility and control */}
@@ -65,6 +66,10 @@ const HomePage = ({location}) => {
             </BasicShell>
         </Suspense>
     );
+};
+
+HomePage.propTypes = {
+    location: PropTypes.object.isRequired
 };
 
 export default HomePage;
