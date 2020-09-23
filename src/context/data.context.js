@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {PropTypes} from 'prop-types';
 import absences from '../json_files/absences';
 import members from '../json_files/members';
@@ -11,9 +11,6 @@ export const DataProvider = props => {
         children
     } = props;
 
-    const [state, setState] = useState({ready: false, events: []});
-    const getAllAbsences = () => absences.payload;
-
     const getAllMembers = () => {
         const hash = {};
         members.payload.forEach(member => {
@@ -22,11 +19,47 @@ export const DataProvider = props => {
         return hash;
     };
 
-    const getAllEventData = () => state.events;
+    const getAllAbsences = (filters) => {
+        let allMatchedEvents = [];
+        let allAbsences = absences.payload;
+        const allMembers = getAllMembers();
+        const noFilters = Object.keys(filters).length === 0;
+        if ("userId" in filters) {
+            allMatchedEvents = getEventByUserId(allAbsences, filters.userId);
+        }
+        if ("startDate" in filters && "endDate" in filters) {
+            if (allMatchedEvents.length) allAbsences = allMatchedEvents;
+            allMatchedEvents = getEventByStartEndDate(allAbsences, filters.startDate, filters.endDate);
+        }
+        if (noFilters) {
+            allMatchedEvents = allAbsences;
+        }
 
-    const getEventByUserId = (userId) => {
-        let {...allEvents} = getAllEventData();
-        return allEvents.filter(event => event.userId === userId);
+        allMatchedEvents = allMatchedEvents.map(event => {
+                const userName = allMembers[event.userId].name;
+                const absenceType = event.type.toLowerCase();
+                return {
+                    ...event,
+                    confirmedAt: moment(event.confirmedAt).format("YYYY-MM-DD"),
+                    createdAt: moment(event.createdAt).format("YYYY-MM-DD"),
+                    title: getUserNameWithType(userName, absenceType)
+                }
+            }
+        );
+
+        return allMatchedEvents;
+
+    };
+
+
+    const getAllEventData = (filters) => getAllAbsences(filters);
+
+    const getEventByUserId = (allAbsences, userId) => {
+        return allAbsences.filter(absence => parseInt(absence.userId) === parseInt(userId));
+    };
+
+    const getEventByStartEndDate = (allAbsences, startDate, endDate) => {
+        return allAbsences.filter(absence => moment(absence.startDate) >= moment(startDate) && moment(absence.endDate) <= moment(endDate));
     };
 
     const getUserNameWithType = (userName, absenceType) => {
@@ -40,34 +73,10 @@ export const DataProvider = props => {
         }
     };
 
-
-    useEffect(() => (() => {
-        const allAbsences = getAllAbsences();
-        const allMembers = getAllMembers();
-
-        let allEvents = allAbsences.map(event => {
-                const userName = allMembers[event.userId].name;
-                const absenceType = event.type.toLowerCase();
-                return {
-                    ...event,
-                    confirmedAt: moment(event.confirmedAt).format("YYYY-MM-DD"),
-                    createdAt: moment(event.createdAt).format("YYYY-MM-DD"),
-                    title: getUserNameWithType(userName, absenceType)
-                }
-            }
-        );
-
-        setState(state => {
-            return {...state, ready: true, events: [...allEvents]}
-        });
-    })(), []); // Setting up initial state
-
     return (
         <DataContext.Provider
             value={{
-                ready: state.ready,
-                getAllEventData,
-                getEventByUserId,
+                getAllEventData
             }}
         >
             {children}

@@ -4,15 +4,16 @@ import Table from '../components/table/Table';
 import BasicShell from "../shell/basicShell";
 import download from 'downloadjs';
 import * as moment from "moment";
+import querystring from "querystring";
 
 let ics = require("ics");
 
+const HomePage = ({location}) => {
+    const {getAllEventData} = useContext(DataContext); // Reading Data from context api
+    const [events, setEvents] = useState([]); // Not setting initial state for mock async code
+    const [loading, setLoading] = useState(false); // Dummy Loading indicator until data from the api loaded successfully
+    const [eventFileDataToExport, setEventFileDataToExport] = useState(null); // Save data locally to avoid loop every time
 
-const App = () => {
-    const {ready, getAllEventData} = useContext(DataContext); // Reading Data from context api
-    const [events, setEvents] = useState([]); // Not setting initial state for dummy async code
-    const [loading, setLoading] = useState(false); // Loading indicator until data from the api loaded successfully
-    const [eventFileDataToExport, setEventFileDataToExport] = useState(null); // Loading indicator until data from the api loaded successfully
 
     const downloadIcs = (e) => {
         e.preventDefault();
@@ -28,7 +29,6 @@ const App = () => {
                 }
             });
 
-
             const {error, value} = ics.createEvents(eventToExport);
             if (error) {
                 console.log(error);
@@ -42,19 +42,19 @@ const App = () => {
     };
 
     useEffect(() => {
-        if (ready) {
-            setEvents([...getAllEventData()]);
-            setLoading(false);
-        }
-    }, [ready]);
+        let searchTerm = location.search.slice(1);
+        let queryParamsObject = querystring.parse(searchTerm);
+        setEvents([...getAllEventData(queryParamsObject)]);
+        setLoading(false);
+    }, []); //To get all sync data on component mount
 
     return (
-        <BasicShell>
+        <BasicShell>{/*Included on page level for better visibility and control */}
             {loading ? 'loading...' :
                 <Fragment>
-                    <div className={"clearfix"}>
+                    {events.length > 0 && <div className={"clearfix"}>
                         <button className={"btn btn-secondary float-right"} onClick={downloadIcs}>Download</button>
-                    </div>
+                    </div>}
                     <Table events={events}/>
                 </Fragment>
             }
@@ -62,4 +62,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default HomePage;
