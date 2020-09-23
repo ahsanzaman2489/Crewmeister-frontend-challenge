@@ -1,17 +1,18 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, Suspense, useContext, useEffect, useState} from 'react';
 import {DataContext} from '../context/data.context';
-import Table from '../components/table/Table';
-import BasicShell from "../shell/basicShell";
 import download from 'downloadjs';
 import * as moment from "moment";
 import querystring from "querystring";
+
+const BasicShell = React.lazy(() => import("../shell/basicShell"));
+const Table = React.lazy(() => import("../components/table/Table"));
 
 let ics = require("ics");
 
 const HomePage = ({location}) => {
     const {getAllEventData} = useContext(DataContext); // Reading Data from context api
     const [events, setEvents] = useState([]); // Not setting initial state for mock async code
-    const [loading, setLoading] = useState(false); // Dummy Loading indicator until data from the api loaded successfully
+    const [loading, setLoading] = useState(true); // Dummy Loading indicator until data from the api loaded successfully
     const [eventFileDataToExport, setEventFileDataToExport] = useState(null); // Save data locally to avoid loop every time
 
 
@@ -49,16 +50,20 @@ const HomePage = ({location}) => {
     }, []); //To get all sync data on component mount
 
     return (
-        <BasicShell>{/*Included on page level for better visibility and control */}
-            {loading ? 'loading...' :
-                <Fragment>
-                    {events.length > 0 && <div className={"clearfix"}>
-                        <button className={"btn btn-secondary float-right"} onClick={downloadIcs}>Download</button>
-                    </div>}
-                    <Table events={events}/>
-                </Fragment>
-            }
-        </BasicShell>
+        <Suspense fallback={<div>Loading...</div>}>
+            <BasicShell>{/*Included on page level for better visibility and control */}
+                {loading ? 'loading...' :
+                    <Fragment>
+                        {events.length > 0 && <div className={"clearfix"}>
+                            <button className={"btn btn-secondary float-right"} onClick={downloadIcs}>Download</button>
+                        </div>}
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Table events={events}/>
+                        </Suspense>
+                    </Fragment>
+                }
+            </BasicShell>
+        </Suspense>
     );
 };
 
