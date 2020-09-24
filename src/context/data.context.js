@@ -19,11 +19,23 @@ export const DataProvider = props => {
         return hash;
     };
 
+    const getUserNameWithType = (userName, absenceType) => {
+        switch (absenceType) {
+            case "sickness" :
+                return `${userName} is sick`;
+            case "vacation" :
+                return `${userName} is on vacation`;
+            default :
+                return `${userName} is on vacation`;
+        }
+    };
+
     const getAllAbsences = (filters) => {
         let allMatchedEvents = [];
         let allAbsences = absences.payload;
         const allMembers = getAllMembers();
         const noFilters = Object.keys(filters).length === 0;
+
         if ("userId" in filters) {
             allMatchedEvents = getEventByUserId(allAbsences, filters.userId);
         }
@@ -48,7 +60,6 @@ export const DataProvider = props => {
         );
 
         return allMatchedEvents;
-
     };
 
 
@@ -60,17 +71,6 @@ export const DataProvider = props => {
 
     const getEventByStartEndDate = (allAbsences, startDate, endDate) => {
         return allAbsences.filter(absence => moment(absence.startDate) >= moment(startDate) && moment(absence.endDate) <= moment(endDate));
-    };
-
-    const getUserNameWithType = (userName, absenceType) => {
-        switch (absenceType) {
-            case "sickness" :
-                return `${userName} is sick`;
-            case "vacation" :
-                return `${userName} is on vacation`;
-            default :
-                return `${userName} is on vacation`;
-        }
     };
 
     return (

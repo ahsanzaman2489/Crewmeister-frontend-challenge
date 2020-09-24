@@ -49,7 +49,8 @@ const HomePage = ({location}) => {
         setEvents([...getAllEventData(queryParamsObject)]);
         setLoading(false);
     }, []); //To get all sync data on component mount
-    console.log('asd')
+
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <BasicShell>{/*Included on page level for better visibility and control */}

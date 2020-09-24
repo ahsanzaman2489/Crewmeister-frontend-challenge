@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component should match with snapshot 1`] = `
+<header>
+  <nav
+    className="navbar-dark black navbar navbar-expand-md"
+    data-test="navbar"
+    role="navigation"
+  >
+    <div
+      className="container"
+      data-test="container"
+    >
+      <div
+        className="navbar-brand"
+        data-test="navbar-brand"
+      >
+        <strong>
+          Crewmeister frontend coding challenge
+        </strong>
+      </div>
+    </div>
+  </nav>
+</header>
+`;
