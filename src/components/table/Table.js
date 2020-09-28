@@ -54,11 +54,11 @@ const Table = ({events}) => {
 };
 
 Table.propTypes = {
-    children: PropTypes.array
+    events: PropTypes.array
 };
 
 Table.defualtProps = {
-    children: []
+    events: []
 };
 
 export default Table;

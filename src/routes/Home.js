@@ -1,9 +1,9 @@
 import React, {Fragment, Suspense, useContext, useEffect, useState} from 'react';
 import {DataContext} from '../context/data.context';
 import download from 'downloadjs';
-import * as moment from "moment";
 import querystring from "querystring";
 import PropTypes from "prop-types";
+import moment from 'moment';
 
 const BasicShell = React.lazy(() => import("../shell/basicShell"));
 const Table = React.lazy(() => import("../components/table/Table"));
@@ -50,14 +50,13 @@ const HomePage = ({location}) => {
         setLoading(false);
     }, []); //To get all sync data on component mount
 
-
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <BasicShell>{/*Included on page level for better visibility and control */}
                 {loading ? 'loading...' :
                     <Fragment>
                         {events.length > 0 && <div className={"clearfix"}>
-                            <button className={"btn btn-secondary float-right"} onClick={downloadIcs}>Download</button>
+                            <button className={"btn btn-secondary float-right download"} onClick={downloadIcs}>Download</button>
                         </div>}
                         <Suspense fallback={<div>Loading...</div>}>
                             <Table events={events}/>

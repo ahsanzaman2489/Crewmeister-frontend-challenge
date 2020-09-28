@@ -2,7 +2,7 @@ import React from 'react';
 import {PropTypes} from 'prop-types';
 import absences from '../json_files/absences';
 import members from '../json_files/members';
-import * as moment from "moment";
+import moment from "moment";
 
 export const DataContext = React.createContext(null);
 
