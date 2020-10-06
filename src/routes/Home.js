@@ -17,7 +17,7 @@ const HomePage = ({location}) => {
     const [eventFileDataToExport, setEventFileDataToExport] = useState(null); // Save data locally to avoid loop every time
 
 
-    const downloadIcs = (e) => {
+    const downloadIcs = (e) => {//Downloading Calender  events file to export
         e.preventDefault();
         if (!eventFileDataToExport) {
             const eventToExport = events.map(event => {
@@ -33,7 +33,6 @@ const HomePage = ({location}) => {
 
             const {error, value} = ics.createEvents(eventToExport);
             if (error) {
-                console.log(error);
                 return
             }
             setEventFileDataToExport(value);
@@ -56,7 +55,9 @@ const HomePage = ({location}) => {
                 {loading ? 'loading...' :
                     <Fragment>
                         {events.length > 0 && <div className={"clearfix"}>
-                            <button className={"btn btn-secondary float-right download"} onClick={downloadIcs}>Download</button>
+                            <button className={"btn btn-secondary float-right download"}
+                                    onClick={downloadIcs}>Download
+                            </button>
                         </div>}
                         <Suspense fallback={<div>Loading...</div>}>
                             <Table events={events}/>

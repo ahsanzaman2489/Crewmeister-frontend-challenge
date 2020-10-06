@@ -1,12 +1,11 @@
 import React from 'react';
-import {PropTypes} from 'prop-types';
 import absences from '../json_files/absences';
 import members from '../json_files/members';
 import moment from "moment";
 
 export const DataContext = React.createContext(null);
 
-export const getAllMembers = () => {
+export const getAllMembers = () => { //Creating member has map to read data without loop
     const hash = {};
     members.payload.forEach(member => {
         hash[member.userId] = member;
@@ -14,7 +13,7 @@ export const getAllMembers = () => {
     return hash;
 };
 
-export const getUserNameWithType = (userName, absenceType) => {
+export const getUserNameWithType = (userName, absenceType) => {//Setting up title against absence type
     switch (absenceType) {
         case "sickness" :
             return `${userName} is sick`;
@@ -25,15 +24,15 @@ export const getUserNameWithType = (userName, absenceType) => {
     }
 };
 
-const getEventByUserId = (allAbsences, userId) => {
+const getEventByUserId = (allAbsences, userId) => { //return Filter only userId specific data
     return allAbsences.filter(absence => parseInt(absence.userId) === parseInt(userId));
 };
 
-const getEventByStartEndDate = (allAbsences, startDate, endDate) => {
+const getEventByStartEndDate = (allAbsences, startDate, endDate) => {// return filter data between date ranges
     return allAbsences.filter(absence => moment(absence.startDate) >= moment(startDate) && moment(absence.endDate) <= moment(endDate));
 };
 
-export const getAllAbsences = filters => {
+export const getAllAbsences = filters => {//Returning filtered data if there is filters and all data if no filter
     let allMatchedEvents = [];
     let allAbsences = absences.payload;
     const allMembers = getAllMembers();
@@ -84,12 +83,4 @@ export const DataProvider = props => {
             {children}
         </DataContext.Provider>
     );
-};
-
-DataContext.propTypes = {
-    initialData: PropTypes.instanceOf(Object)
-};
-
-DataContext.defaultProps = {
-    initialData: {}
-};
+};//Context provider
