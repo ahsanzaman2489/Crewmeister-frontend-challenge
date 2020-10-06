@@ -4,6 +4,14 @@
   ],
   "testRegex": "/*.test.js$",
   "collectCoverage": true,
+  "collectCoverageFrom": [
+    "src/**/*.js",
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!<rootDir>/node_modules/",
+    "!src/index.js",
+    "!src/app.js",
+    "!src/serviceWorker.js"
+  ],
   "coverageDirectory": "test-coverage",
   "coverageThreshold": {
     "global": {
@@ -19,9 +27,5 @@
   ],
   "snapshotSerializers": [
     "enzyme-to-json/serializer"
-  ],
-  "collectCoverageFrom": [
-    "src/**/*.js",
-    "!src/index.js"
   ]
 }
