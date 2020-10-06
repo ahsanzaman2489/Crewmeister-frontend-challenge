@@ -91,13 +91,11 @@ describe("Home component", () => {
 
     it('should hide download button if absences length is zero', () => {
         const {wrapper} = setup({}, null);
-
         expect(wrapper.find('.download').length).toBe(0);
     });
 
     it('should show download button if absences length greater then 0', () => {
         const {wrapper} = setup({}, null, [testData[0]]);
-
         expect(wrapper.find('.download').length).toBe(1);
     });
 
@@ -108,11 +106,10 @@ describe("Home component", () => {
 
     it('Should render rows properly when there is matched data', () => {
         const {wrapper} = setup({}, null, testData);
-
         expect(wrapper.find('tbody tr').length).toBe(2);
     });
 
-    it('should call function to download file', () => {
+    it('should call function to download file when download button click ', () => {
         const {wrapper} = setup({}, null, [testData[0]]);
 
         wrapper.find('.download').simulate('click');
